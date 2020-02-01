@@ -156,9 +156,9 @@ int main(const int argc, const char** argv)
   for (int step = 1; step <= nSteps; step++) {
 
     const double tStart = omp_get_wtime(); // Start timing
-    cudaMemcpy(cuda_pevo, pevo, SIZE, cudaMemcpyHostToDevice);
+    cudaMemcpy(cuda_evo, evo, SIZE, cudaMemcpyHostToDevice);
     MoveParticles_CUDA<<<NBR_BLOCKS,THREADS_PER_BLOCK>>>(nParticles, cuda_pevo.POS, cuda_pevo.VIT);
-    cudaMemcpy(pevo, cuda_pevo, SIZE, cudaMemcpyDeviceToHost);
+    cudaMemcpy(evo, cuda_evo, SIZE, cudaMemcpyDeviceToHost);
     const double tEnd = omp_get_wtime(); // End timing
 
     // Move particles according to their velocities

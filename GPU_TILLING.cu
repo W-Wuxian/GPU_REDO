@@ -145,13 +145,13 @@ int main(const int argc, const char** argv)
   double rate = 0, dRate = 0; // Benchmarking data
   const int skipSteps = 3; // Skip first iteration (warm-up)
   printf("\033[1m%5s %10s %10s %8s\033[0m\n", "Step", "Time, s", "Interact/s", "GFLOP/s"); fflush(stdout);
- int NBR_BLOCKS = (nParticles+THREADS_PER_BLOCK-1)/THREADS_PER_BLOCK:
+ int NBR_BLOCKS = (nParticles+THREADS_PER_BLOCK-1)/THREADS_PER_BLOCK;
 //-------------------------------------------------------------------------------------------------------------------------
   cudaProfilerStart();
 //-------------------------------------------------------------------------------------------------------------------------
   float *cuda_evo;
-  cudaMalloc(&cuda_evo, SIZE);
-  struct PType cuda_pevo = {(float4*)cuda_evo,((float4*)cuda_evo)+nParticles};
+  cudaMalloc((void **)&cuda_evo, SIZE);
+  PType cuda_pevo = {(float4*)cuda_evo,((float4*)cuda_evo)+nParticles};
 //-------------------------------------------------------------------------------------------------------------------------
   for (int step = 1; step <= nSteps; step++) {
 

@@ -13,7 +13,7 @@
 #define BLOCK_SIZE 256
 
 
-typedef struct { float4 *pos, *vit; } PType;
+typedef struct { float4 *POS, *VIT; } PType;
 
 void randomizeBodies(float *data, int n) {
   for (int i = 0; i < n; i++) {
@@ -96,12 +96,12 @@ int main(const int argc, const char** argv) {
 	cudaProfilerStart();
   for (int iter = 1; iter <= nIters; iter++) {
     cudaMemcpy(d_buf, buf, bytes, cudaMemcpyHostToDevice);
-    bodyForce<<<nBlocks, BLOCK_SIZE>>>(d_p.pos, d_p.vit, dt, nBodies);
+    bodyForce<<<nBlocks, BLOCK_SIZE>>>(d_p.POS, d_p.VIT, dt, nBodies);
     cudaMemcpy(buf, d_buf, bytes, cudaMemcpyDeviceToHost);
     for (int i = 0 ; i < nBodies; i++) { // integrate position
-      p.pos[i].x += p.vit[i].x*dt;
-      p.pos[i].y += p.vit[i].y*dt;
-      p.pos[i].z += p.vit[i].z*dt;
+      p.POS[i].x += p.VIT[i].x*dt;
+      p.POS[i].y += p.VIT[i].y*dt;
+      p.POS[i].z += p.VIT[i].z*dt;
     }
 		const float HztoInts   = ((float)nParticles)*((float)(nParticles-1)) ;
     const float HztoGFLOPs = 20.0*1e-9*((float)(nParticles))*((float)(nParticles-1));

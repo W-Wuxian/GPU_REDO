@@ -186,7 +186,7 @@ int main(const int argc, const char** argv)
     dump(step, nParticles, pevo.POS, pevo.VIT);
 #endif
   }
-  cudaFree(cuda_pevo);
+  cudaFree(cuda_evo);
 //-------------------------------------------------------------------------------------------------------------------------
   cudaProfilerStop();
 //-------------------------------------------------------------------------------------------------------------------------
@@ -197,6 +197,6 @@ int main(const int argc, const char** argv)
 	 "Average performance:", "", rate, dRate);
   printf("-----------------------------------------------------\n");
   printf("* - warm-up, not included in average\n\n");
-  free(pevo);
+  free(evo);
   return 0;
 }

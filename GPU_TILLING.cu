@@ -71,7 +71,7 @@ int main(const int argc, const char** argv) {
   int nBodies = 16384;
   int nParticles;
   if (argc > 1) nBodies = atoi(argv[1]);
-Nparticles = nBodies;
+  nParticles = nBodies;
   const float dt = 0.00005f; // time step
   const int nIters = 10;  // simulation iterations
 

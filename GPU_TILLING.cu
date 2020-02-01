@@ -18,7 +18,7 @@ typedef struct {
 
 
 //CUDA VERSION:
-__global__ void VitParticles_CUDA(const int nParticles, float *p, float *v)
+__global__ void VitParticles_CUDA(const int nParticles, float4 *p, float4 *v)
 {
   // Particle propagation time step
     const float dt = 0.0005f;
@@ -48,9 +48,9 @@ __global__ void VitParticles_CUDA(const int nParticles, float *p, float *v)
 		__syncthreads();
 	}	
       	//Accelerate particles in response to the gravitational force:
-      	VIT[i].x += dt*Fx; 
-      	VIT[i].y += dt*Fy; 
-      	VIT[i].z += dt*Fz;
+      	v[i].x += dt*Fx; 
+      	v[i].y += dt*Fy; 
+      	v[i].z += dt*Fz;
       }
 }//fct MoveParticles_CUDA
 

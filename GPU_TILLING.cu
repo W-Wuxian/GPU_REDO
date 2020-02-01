@@ -150,7 +150,7 @@ int main(const int argc, const char** argv)
   cudaProfilerStart();
 //-------------------------------------------------------------------------------------------------------------------------
   float *cuda_evo;
-  cudaMalloc((void **)&cuda_evo, SIZE);
+  cudaMalloc(&cuda_evo, SIZE);
   PType cuda_pevo = {(float4*)cuda_evo,((float4*)cuda_evo)+nParticles};
 //-------------------------------------------------------------------------------------------------------------------------
   for (int step = 1; step <= nSteps; step++) {

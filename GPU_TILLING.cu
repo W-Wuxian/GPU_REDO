@@ -7,9 +7,9 @@
 #include <cuda_profiler_api.h>
 
 
-#define SOFT 1e-20f
+#define SOFT 1e-15f
 
-#define THREADS_PER_BLOCK 128
+#define THREADS_PER_BLOCK 256
 #define DUMP
 
 typedef struct { 
@@ -35,10 +35,11 @@ __global__ void VitParticles_CUDA(const int nParticles, float4 *p, float4 *v)
 	  			//avoid singularity and interaction with self:
 	  			//const float softening = 1e-20;
 	  			//Newton's law of universal gravity:
+				const float soft2=1e-15f;
 	  			float dx = p3[j].x - p[i].x;
 	  			float dy = p3[j].y - p[i].y;
           			float dz = p3[j].z - p[i].z;
-          			float drSquared    = dx*dx + dy*dy + dz*dz + SOFT;
+          			float drSquared    = dx*dx + dy*dy + dz*dz + soft2;
 				float invdrS       = rsqrtf(drSquared);
           			float invdrPower32 = invdrS*invdrS*invdrS;
        			  	//Calculate the net force:

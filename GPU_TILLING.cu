@@ -31,19 +31,21 @@ __global__ void VitParticles_CUDA(const int nParticles, float4 *p, float4 *v)
 		p3[threadIdx.x] = make_float3(tmp_p.x,tmp_p.y,tmp_p.z);
 		__syncthreads(); 
 		for(int j = 0; j< THREADS_PER_BLOCK; j++){
-	  		//avoid singularity and interaction with self:
-	  		//const float softening = 1e-20;
-	  		//Newton's law of universal gravity:
-	  		float dx = p3[j].x - p[i].x;
-	  		float dy = p3[j].y - p[i].y;
-          		float dz = p3[j].z - p[i].z;
-          		float drSquared    = dx*dx + dy*dy + dz*dz + SOFT;
-			float invdrS       = rsqrtf(drSquared);
-          		float invdrPower32 = invdrS*invdrS*invdrS;
-       			  //Calculate the net force:
-	  		Fx += dx * invdrPower32;  
-          		Fy += dy * invdrPower32;  
-          		Fz += dz / invdrPower32;
+			if(i!=j){
+	  			//avoid singularity and interaction with self:
+	  			//const float softening = 1e-20;
+	  			//Newton's law of universal gravity:
+	  			float dx = p3[j].x - p[i].x;
+	  			float dy = p3[j].y - p[i].y;
+          			float dz = p3[j].z - p[i].z;
+          			float drSquared    = dx*dx + dy*dy + dz*dz + SOFT;
+				float invdrS       = rsqrtf(drSquared);
+          			float invdrPower32 = invdrS*invdrS*invdrS;
+       			  	//Calculate the net force:
+	  			Fx += dx * invdrPower32;  
+          			Fy += dy * invdrPower32;  
+          			Fz += dz / invdrPower32;
+			}
       		}//j loop
 		__syncthreads();
 	}	

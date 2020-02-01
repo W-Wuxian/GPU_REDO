@@ -126,7 +126,7 @@ int main(const int argc, const char** argv)
 //-------------------------------------------------------------------------------------------------------------------------
   //DECLARATION & ALLOC particle ON HOST:
   float *evo = (float*) malloc(SIZE );
-  struct PType pevo = {(float4*)evo,((float4*)evo)+nParticles};
+  PType pevo = {(float4*)evo,((float4*)evo)+nParticles};
 //-------------------------------------------------------------------------------------------------------------------------
   // Initialize random number generator and particles
   //srand48(0x2020);

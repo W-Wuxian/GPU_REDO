@@ -92,7 +92,7 @@ void init_norand(int ntol, const int nParticles , float *tab){
 
 //-------------------------------------------------------------------------------------------------------------------------
 
-void dump(int iter, int nParticles, float *p, float *v)
+void dump(int iter, int nParticles, struct PType* pv)
 {
     char filename[64];
         snprintf(filename, 64, "output_%d.txt", iter);
@@ -104,7 +104,7 @@ void dump(int iter, int nParticles, float *p, float *v)
         for (i = 0; i < nParticles; i++)
 	    {
 	      fprintf(f, "%e %e %e %e %e %e\n",
-		p[i].x, p[i].y, p[i].z, v[i].x, v[i].y, v[i].z);
+		pv[i].x, pv[i].y, pv[i].z, pv[i].x, pv[i].y, pv[i].z);
 							      }
 
     fclose(f);
@@ -131,9 +131,9 @@ int main(const int argc, const char** argv)
   // Initialize random number generator and particles
   //srand48(0x2020);
   // Initialize random number generator and particles
-  //init_rand(nParticles, POS, VIT);
+  //init_rand(nParticles, nParticles, evo);
   // Initialize (no random generator) particles
-  init_norand(8*nParticles, evo);
+  init_norand(8*nParticles, nParticles,evo);
 //-------------------------------------------------------------------------------------------------------------------------
   
 
@@ -183,7 +183,7 @@ int main(const int argc, const char** argv)
     fflush(stdout);
 
 #ifdef DUMP
-    dump(step, nParticles, pevo.POS, pevo.VIT);
+    dump(step, nParticles, pevo);
 #endif
   }
   cudaFree(cuda_pevo);

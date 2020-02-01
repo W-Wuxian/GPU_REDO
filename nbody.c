@@ -101,6 +101,42 @@ void init_norand(int nParticles, struct ParticleType* particle){
   }
 }
 
+void init_sphere(int nParticles, struct ParticleType* particle){
+  const float a = 0.0f, b = 0.0f, c = 0.0f;
+  const float r = 100.0f;
+  particle[0].x =  0.0f;
+  particle[0].y =  0.0f;
+  particle[0].z =  r;
+  particle[0].vx = 0.0f;
+  particle[0].vy = 0.0f;
+  particle[0].vz = -r;
+	
+  particle[1].x =  0.0f;
+  particle[1].y =  0.0f;
+  particle[1].z =  -r;
+  particle[1].vx = 0.0f;
+  particle[1].vy = 0.0f;
+  particle[1].vz = r;
+  for (int i = 2; i < 3289; i++)
+  { float eta = 2*3.14159265359/3287;
+    particle[i].x =  r*cos(eta);
+    particle[i].y =  r*sin(eta);
+    particle[i].z =  0.0f;
+    particle[i].vx = -r*cos(eta);
+    particle[i].vy = r*sin(eta);
+    particle[i].vz = 0.0f;
+  }
+ for (int i = 3289; i < nParticles; i++)
+    float eta = 2*3.14159265359/13095.0;
+    particle[i].x =  r*cos(eta);
+    particle[i].y =  r*sin(eta);
+    particle[i].z =  0.0f;
+    particle[i].vx = -r*cos(eta);
+    particle[i].vy = r*sin(eta);
+    particle[i].vz = -99.0f+0.01504391f;
+  }
+}
+
 int main(const int argc, const char** argv)
 {
 

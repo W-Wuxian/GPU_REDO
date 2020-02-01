@@ -74,7 +74,7 @@ int main(const int argc, const char** argv) {
   nParticles = nBodies;
   const float dt = 0.00005f; // time step
   const int nIters = 10;  // simulation iterations
-
+	int nSteps = nIters;
   int bytes = 2*nBodies*sizeof(float4);
   float *buf = (float*)malloc(bytes);
   PType p = { (float4*)buf, ((float4*)buf) + nBodies };
@@ -96,15 +96,17 @@ int main(const int argc, const char** argv) {
 	printf("\033[1m%5s %10s %10s %8s\033[0m\n", "Step", "Time, s", "Interact/s", "GFLOP/s"); fflush(stdout);
 	cudaProfilerStart();
   for (int step = 1; step <= nIters; step++) {
+  	const double tStart = omp_get_wtime(); // Start timing
     cudaMemcpy(d_buf, buf, bytes, cudaMemcpyHostToDevice);
     bodyForce<<<nBlocks, BLOCK_SIZE>>>(d_p.POS, d_p.VIT, dt, nBodies);
     cudaMemcpy(buf, d_buf, bytes, cudaMemcpyDeviceToHost);
+    	const double tEnd = omp_get_wtime(); // End timing
     for (int i = 0 ; i < nBodies; i++) { // integrate position
       p.POS[i].x += p.VIT[i].x*dt;
       p.POS[i].y += p.VIT[i].y*dt;
       p.POS[i].z += p.VIT[i].z*dt;
     }
-		const float HztoInts   = ((float)nParticles)*((float)(nParticles-1)) ;
+    const float HztoInts   = ((float)nParticles)*((float)(nParticles-1)) ;
     const float HztoGFLOPs = 20.0*1e-9*((float)(nParticles))*((float)(nParticles-1));
     if (step > skipSteps) { // Collect statistics
       rate  += HztoGFLOPs/(tEnd - tStart);

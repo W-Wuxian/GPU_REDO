@@ -61,67 +61,34 @@ void init_rand(int ntol, float *tab){
   srand48(0x2020);
   for (int i = 0; i < ntol; i++)
   {
-    tab[i].x =  2.0*drand48() - 1.0;
-    tab[i].y =  2.0*drand48() - 1.0;
-    tab[i].z =  2.0*drand48() - 1.0;
-    tab[i].x =  2.0*drand48() - 1.0;
-    tab[i].y =  2.0*drand48() - 1.0;
-    tab[i].z =  2.0*drand48() - 1.0;
+    tab[i] =  2.0*drand48() - 1.0;
   }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
 
 // Initialize (no random generator) particles
-void init_norand(int ntol, float *tab){
+void init_norand(int ntol, const int nParticles , float *tab){
   const float a=127.0/nParticles;
   for (int i = 0; i < ntol; i++)
   {
-    tab[i].x =  i*a;//2.0*drand48() - 1.0;
-    tab[i].y =  i*a;//2.0*drand48() - 1.0;
-    tab[i].z =  1.0;//2.0*drand48() - 1.0;
-    tab[i].x =  0.5;//2.0*drand48() - 1.0;
-    tab[i].y =  0.5;//2.0*drand48() - 1.0;
-    tab[i].z =  0.5;//2.0*drand48() - 1.0;
+	if(i>=0&i<nParticles){
+    		tab[i] =  i*a;
+	}
+	if(i>=nParticles&i<2*nParticles){
+    		tab[i] =  i*a;
+	 }
+	 if(i>=2*nParticles&i<3*nParticles){
+    		tab[i] =  1.0;
+	 }
+    	 if(i>=3*nParticles){
+    		tab[i] =  0.5;
+	 }
   }
 }
 
 
-void init_sphere(int ntol, float *tab){
-  const float a = 0.0f, b = 0.0f, c = 0.0f;
-  const float r = 100.0f;
-  tab[0].x =  0.0f;
-  tab[0].y =  0.0f;
-  tab[0].z =  r;
-  tab[0].vx = 0.0f;
-  tab[0].vy = 0.0f;
-  tab[0].vz = -r;
-	
-  tab[1].x =  0.0f;
-  tab[1].y =  0.0f;
-  tab[1].z =  -r;
-  tab[1].vx = 0.0f;
-  tab[1].vy = 0.0f;
-  tab[1].vz = r;
-  for (int i = 2; i < 3289; i++)
-  { float eta = 2*3.14159265359/3287;
-    tab[i].x =  r*cos(eta);
-    tab[i].y =  r*sin(eta);
-    tab[i].z =  0.0f;
-    tab[i].vx = -r*cos(eta);
-    tab[i].vy = r*sin(eta);
-    tab[i].vz = 0.0f;
-  }
- for (int i = 3289; i < ntol; i++)
-    float eta = 2*3.14159265359/13095.0;
-    tab[i].x =  r*cos(eta);
-    tab[i].y =  r*sin(eta);
-    tab[i].z =  0.0f;
-    tab[i].vx = -r*cos(eta);
-    tab[i].vy = r*sin(eta);
-    tab[i].vz = -99.0f+0.01504391f;
-  }
-}
+
 
 //-------------------------------------------------------------------------------------------------------------------------
 

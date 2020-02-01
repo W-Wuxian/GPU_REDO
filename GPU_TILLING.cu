@@ -24,7 +24,7 @@ __global__ void VitParticles_CUDA(const int nParticles, float4 *p, float4 *v)
     const float dt = 0.0005f;
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if(i<nParticles){
-	float Fx = 0.0, Fy = 0.0, Fz = 0.0;
+	float Fx = 0.0f, Fy = 0.0f, Fz = 0.0f;
 	for(int stack=0; stack<gridDim.x; stack++){
 		__shared__ float3 p3[THREADS_PER_BLOCK];
 		float4 tmp_p = p[stack*blockDim.x+threadIdx.x];
@@ -40,7 +40,7 @@ __global__ void VitParticles_CUDA(const int nParticles, float4 *p, float4 *v)
 	  			float dy = p3[j].y - p[i].y;
           			float dz = p3[j].z - p[i].z;
           			float drSquared    = dx*dx + dy*dy + dz*dz + soft2;
-				float invdrS       = rsqrtf(drSquared);
+				float invdrS       = 1.0f/(sqrt(drSquared));
           			float invdrPower32 = invdrS*invdrS*invdrS;
        			  	//Calculate the net force:
 	  			Fx += dx * invdrPower32;  
@@ -64,7 +64,7 @@ void init_rand(int ntol, float *tab){
   srand48(0x2020);
   for (int i = 0; i < ntol; i++)
   {
-    tab[i] =  2.0*drand48() - 1.0;
+    tab[i] =  2.0f*drand48() - 1.0f;
   }
 }
 

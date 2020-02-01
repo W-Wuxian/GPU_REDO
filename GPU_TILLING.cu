@@ -53,7 +53,7 @@ void bodyForce(float4 *p, float4 *v, float dt, int n) {
         float dx = p3[j].x - p[i].x;
         float dy = p3[j].y - p[i].y;
         float dz = p3[j].z - p[i].z;
-        float distSqr = dx*dx + dy*dy + dz*dz + SOFTENING;
+        float distSqr = dx*dx + dy*dy + dz*dz + SOFT;
         float invDist = rsqrtf(distSqr);
         float invDist3 = invDist * invDist * invDist;
 
@@ -69,8 +69,9 @@ void bodyForce(float4 *p, float4 *v, float dt, int n) {
 int main(const int argc, const char** argv) {
 
   int nBodies = 16384;
+  int nParticles;
   if (argc > 1) nBodies = atoi(argv[1]);
-
+Nparticles = nBodies;
   const float dt = 0.00005f; // time step
   const int nIters = 10;  // simulation iterations
 
@@ -94,7 +95,7 @@ int main(const int argc, const char** argv) {
   const int skipSteps = 3; // Skip first iteration (warm-up)
 	printf("\033[1m%5s %10s %10s %8s\033[0m\n", "Step", "Time, s", "Interact/s", "GFLOP/s"); fflush(stdout);
 	cudaProfilerStart();
-  for (int iter = 1; iter <= nIters; iter++) {
+  for (int step = 1; step <= nIters; step++) {
     cudaMemcpy(d_buf, buf, bytes, cudaMemcpyHostToDevice);
     bodyForce<<<nBlocks, BLOCK_SIZE>>>(d_p.POS, d_p.VIT, dt, nBodies);
     cudaMemcpy(buf, d_buf, bytes, cudaMemcpyDeviceToHost);
@@ -112,7 +113,7 @@ int main(const int argc, const char** argv) {
     printf("%5d %10.3e %10.3e %8.1f %s\n",
 	  step, (tEnd-tStart), HztoInts/(tEnd-tStart), HztoGFLOPs/(tEnd-tStart), (step<=skipSteps?"*":""));
 		fflush(stdout);
-		dump(iter, nParticles, p);
+		dump(step, nBodies, p);
 	}
   cudaProfilerStop();
   free(buf);

@@ -133,9 +133,9 @@ int main(const int argc, const char** argv)
   // Initialize random number generator and particles
   //srand48(0x2020);
   // Initialize random number generator and particles
-  //init_rand(nParticles, evo);
+  init_rand(nParticles, evo);
   // Initialize (no random generator) particles
-  init_norand(8*nParticles, nParticles,evo);
+  //init_norand(8*nParticles, nParticles,evo);
 //-------------------------------------------------------------------------------------------------------------------------
   
 

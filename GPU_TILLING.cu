@@ -131,7 +131,7 @@ int main(const int argc, const char** argv)
   // Initialize random number generator and particles
   //srand48(0x2020);
   // Initialize random number generator and particles
-  //init_rand(nParticles, nParticles, evo);
+  //init_rand(nParticles, evo);
   // Initialize (no random generator) particles
   init_norand(8*nParticles, nParticles,evo);
 //-------------------------------------------------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ int main(const int argc, const char** argv)
 
     const double tStart = omp_get_wtime(); // Start timing
     cudaMemcpy(cuda_evo, evo, SIZE, cudaMemcpyHostToDevice);
-    MoveParticles_CUDA<<<NBR_BLOCKS,THREADS_PER_BLOCK>>>(nParticles, cuda_pevo.POS, cuda_pevo.VIT);
+    VitParticles_CUDA<<<NBR_BLOCKS,THREADS_PER_BLOCK>>>(nParticles, cuda_pevo.POS, cuda_pevo.VIT);
     cudaMemcpy(evo, cuda_evo, SIZE, cudaMemcpyDeviceToHost);
     const double tEnd = omp_get_wtime(); // End timing
 
@@ -183,7 +183,7 @@ int main(const int argc, const char** argv)
     fflush(stdout);
 
 #ifdef DUMP
-    dump(step, nParticles, pevo);
+    dump(step, nParticles, pevo.POS, pevo.VIT);
 #endif
   }
   cudaFree(cuda_pevo);

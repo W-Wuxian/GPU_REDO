@@ -92,7 +92,7 @@ void init_norand(int ntol, const int nParticles , float *tab){
 
 //-------------------------------------------------------------------------------------------------------------------------
 
-void dump(int iter, int nParticles, struct PType* pv)
+void dump(int iter, int nParticles, float4* p, float4* v)
 {
     char filename[64];
         snprintf(filename, 64, "output_%d.txt", iter);
@@ -104,7 +104,7 @@ void dump(int iter, int nParticles, struct PType* pv)
         for (i = 0; i < nParticles; i++)
 	    {
 	      fprintf(f, "%e %e %e %e %e %e\n",
-		pv[i].x, pv[i].y, pv[i].z, pv[i].x, pv[i].y, pv[i].z);
+		p[i].x, p[i].y, p[i].z, v[i].x, v[i].y, v[i].z);
 							      }
 
     fclose(f);
